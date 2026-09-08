@@ -1,18 +1,21 @@
 const endpoint = process.env.MORI_TICK_URL;
+const secret = process.env.MORI_HEARTBEAT_SECRET;
 
-if (!endpoint) {
-  throw new Error("MORI_TICK_URL is required");
+if (!endpoint || !secret) {
+  throw new Error("MORI_TICK_URL and MORI_HEARTBEAT_SECRET are required");
 }
 
-// GPT-6 Astra designs and codes a complete live canvas in this request.
-// Keep the connection open long enough for the production write to commit.
+// Keep the connection open while MORI thinks, creates art, signs, and confirms.
 const controller = new AbortController();
-const timeout = setTimeout(() => controller.abort(), 180_000);
+const timeout = setTimeout(() => controller.abort(), 300_000);
 
 try {
   const response = await fetch(endpoint, {
     method: "POST",
-    headers: { "user-agent": "mori-heartbeat/2.0" },
+    headers: {
+      "user-agent": "mori-heartbeat/3.0",
+      "authorization": `Bearer ${secret}`,
+    },
     signal: controller.signal,
   });
   const body = await response.text();

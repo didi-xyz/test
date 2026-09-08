@@ -5,15 +5,15 @@ if (!endpoint || !secret) {
   throw new Error("MORI_TICK_URL and MORI_HEARTBEAT_SECRET are required");
 }
 
-// Keep the connection open while MORI thinks, creates art, signs, and confirms.
+// Keep the connection open while MORI researches, debates, creates high-quality art, signs, and confirms.
 const controller = new AbortController();
-const timeout = setTimeout(() => controller.abort(), 300_000);
+const timeout = setTimeout(() => controller.abort(), 420_000);
 
 try {
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
-      "user-agent": "mori-heartbeat/3.0",
+      "user-agent": "mori-heartbeat/4.0",
       "authorization": `Bearer ${secret}`,
     },
     signal: controller.signal,
